@@ -1,5 +1,3 @@
-package aplicacion;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.regex.Pattern;

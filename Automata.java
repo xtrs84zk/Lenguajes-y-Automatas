@@ -1,5 +1,3 @@
-package aplicacion;
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.regex.Pattern;
@@ -267,8 +265,11 @@ public class Automata {
      */
     private static void escribirElResultadoAUnArchivo(ArrayList<String> analisisLexico) throws IOException {
         FileWriter writer = new FileWriter("C:/users/xtrs84zk/desktop/analisis.txt");
-        for (String str : analisisLexico) {
-            writer.write(str);
+        //for (String str : analisisLexico) {
+        for(int i = 0; i<analisisLexico.size(); i++) {
+            if(analisisLexico.get(i) != null) {
+                writer.write(analisisLexico.get(i));
+            }
         }
         writer.close();
     }
