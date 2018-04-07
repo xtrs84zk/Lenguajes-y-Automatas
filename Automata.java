@@ -146,20 +146,20 @@ public class Automata {
                         return analisisDeLaLinea;
                     }
                     posibleConstante += " " + expresiones[i];
-                } while (!constanteStringCorrectamenteFormulada(posibleConstante));
+                } while (!constanteStringCorrectamenteFormulada(posibleConstante) && i < expresiones.length);
                 //Si el do finaliza satisfactoriamente, la expresión es considerada una constante correcta.
                 analisisDeLaLinea.add(analisisLexico(posibleConstante, 64, 1, numeroDeLinea));
-                continue;
-            }
-            analisisDeLaIteracionActual = analisisLexicoDeElementosDelLenguaje(expresiones[i], tokens, numeroDeLinea);
-            if (analisisDeLaIteracionActual != null) {
-                analisisDeLaLinea.add(analisisDeLaIteracionActual);
             } else {
-                analisisDeLaIteracionActual = analisisLexicoDeIdentificadores(expresiones[i], numeroDeLinea);
-                if (analisisDeLaIteracionActual == null) {
-                    analisisDeLaLinea.add(analisisLexico(expresiones[i], 100, 1, numeroDeLinea));
+                analisisDeLaIteracionActual = analisisLexicoDeElementosDelLenguaje(expresiones[i], tokens, numeroDeLinea);
+                if (analisisDeLaIteracionActual != null) {
+                    analisisDeLaLinea.add(analisisDeLaIteracionActual);
+                } else {
+                    analisisDeLaIteracionActual = analisisLexicoDeIdentificadores(expresiones[i], numeroDeLinea);
+                    if (analisisDeLaIteracionActual == null) {
+                        analisisDeLaLinea.add(analisisLexico(expresiones[i], 100, 1, numeroDeLinea));
+                    }
+                    analisisDeLaLinea.add(analisisDeLaIteracionActual);
                 }
-                analisisDeLaLinea.add(analisisDeLaIteracionActual);
             }
         }
         return analisisDeLaLinea;
@@ -220,14 +220,23 @@ public class Automata {
 
     private static boolean constanteStringCorrectamenteFormulada(String constante) {
         if (constante.charAt(0) == '\"' && constante.charAt(constante.length() - 1) == '\"') {
+            constante = constante.replaceAll(" ","");
             String caracterEnLaIteracionActual = "";
             int i = 0;
-            do {
+            {
                 //Si el caracter actual fue una comilla, no es el último caracter en la constante y antes de él
                 //no estaba un caracter de escape, la constante String está mal formada
-                if (constante.charAt(i) == '\"' && i < constante.length() - 1 && constante.charAt(i) == '\\') {
-                    return false;
+                System.out.println(i + " " + constante.length() + " " + constante + " " + constante.charAt(i));
+                if (constante.charAt(i) == '\\') {
+                    if(constante.charAt(i+1) == '\"'){
+                        if(i < constante.length()) {
+                            i += 1;
+                        } else {
+                            return false;
+                        }
+                    }
                 }
+                i++;
             } while (i < constante.length());
             return true;
         }
