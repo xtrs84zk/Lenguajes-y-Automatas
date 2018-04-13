@@ -275,21 +275,23 @@ public class Automata {
     private static boolean constanteStringCorrectamenteFormulada(String constante) {
         constante = constante.replaceAll(" ", "");
         if (constante.charAt(0) == '\"' && constante.charAt(constante.length() - 1) == '\"') {
-            int i = 0;
+            int i = 1;
             do {
                 i++;
                 //Si el caracter actual fue una comilla, no es el último caracter en la constante y antes de él
                 //no estaba un caracter de escape, la constante String está mal formada
-//              System.out.println(i + " " + constante.length() + " " + constante + " " + constante.charAt(i));
-//                if (constante.charAt(i) == '\\') {
-//                    if(constante.charAt(i+1) == '\"'){
-//                        if(i < constante.length()) {
-//                            i += 1;
-//                        } else {
-//                            return false;
-//                        }
-//                    }
-//                }
+                System.out.println(i + " " + constante.length() + " " + constante + " " + constante.charAt(i));
+                if (constante.charAt(i) == '\"') {
+                    if (constante.charAt(i - 1) == '\\') {
+                        if (i < constante.length()) {
+                            i += 1;
+                        } else {
+                            return false;
+                        }
+                    } else {
+                        return i >= constante.length() - 1;
+                    }
+                }
             } while (i < constante.length());
             return true;
         }
