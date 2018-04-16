@@ -162,8 +162,10 @@ public class Automata {
                     do {
                         i++;
                         //si la línea termina, la expresión se considera incorrecta.
-                        if (i > expresiones.length - 1) {
+                        if (i == expresiones.length) {
                             analisisDeLaLinea.add(analisisLexico(posibleConstante, 100, 1, numeroDeLinea));
+                            //Agrega una línea vacía al final del análisis
+                            analisisDeLaLinea.add("\r\n");
                             return analisisDeLaLinea;
                         }
                         posibleConstante += " " + expresiones[i];
