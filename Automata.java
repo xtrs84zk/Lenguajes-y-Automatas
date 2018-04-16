@@ -146,40 +146,43 @@ public class Automata {
      */
     private static ArrayList identificarLexicoEnUnaLinea(String lineaAIdentificar, String[] tokens, int numeroDeLinea) {
         ArrayList<String> analisisDeLaLinea = new ArrayList<>();
-        //Estableciendo las expresiones
-        String analisisDeLaIteracionActual;
-        String expresiones[] = lineaAIdentificar.split(Pattern.quote(" "));
-        for (int i = 0; i < expresiones.length; i++) {
-            //Si alguna de las expresiones comienza por comillas, se procede a concatenar expresiones
-            //mientras la expresión completa sea incorrecta, una vez que es correcta, se procede a analizar
-            if (expresiones[i].charAt(0) == '\"') {
-                String posibleConstante = expresiones[i];
-                do {
-                    i++;
-                    //si la línea termina, la expresión se considera incorrecta.
-                    if (i > expresiones.length - 1) {
-                        analisisDeLaLinea.add(analisisLexico(posibleConstante, 100, 1, numeroDeLinea));
-                        return analisisDeLaLinea;
-                    }
-                    posibleConstante += " " + expresiones[i];
-                } while (!constanteStringCorrectamenteFormulada(posibleConstante));
-                //Si el do finaliza satisfactoriamente, la expresión es considerada una constante correcta.
-                analisisDeLaLinea.add(analisisLexico(posibleConstante, 64, 1, numeroDeLinea));
-            } else {
-                analisisDeLaIteracionActual = analisisLexicoDeElementosDelLenguaje(expresiones[i], tokens, numeroDeLinea);
-                if (analisisDeLaIteracionActual != null) {
-                    analisisDeLaLinea.add(analisisDeLaIteracionActual);
+        //La primer línea siempre debe venir vacía, cuando sea detectada, se ignorará.
+        if (lineaAIdentificar.length() != 1) {
+            //Estableciendo las expresiones
+            String analisisDeLaIteracionActual;
+            String expresiones[] = lineaAIdentificar.split(Pattern.quote(" "));
+            for (int i = 0; i < expresiones.length; i++) {
+                //Si alguna de las expresiones comienza por comillas, se procede a concatenar expresiones
+                //mientras la expresión completa sea incorrecta, una vez que es correcta, se procede a analizar
+                if (expresiones[i].charAt(0) == '\"') {
+                    String posibleConstante = expresiones[i];
+                    do {
+                        i++;
+                        //si la línea termina, la expresión se considera incorrecta.
+                        if (i > expresiones.length - 1) {
+                            analisisDeLaLinea.add(analisisLexico(posibleConstante, 100, 1, numeroDeLinea));
+                            return analisisDeLaLinea;
+                        }
+                        posibleConstante += " " + expresiones[i];
+                    } while (!constanteStringCorrectamenteFormulada(posibleConstante));
+                    //Si el do finaliza satisfactoriamente, la expresión es considerada una constante correcta.
+                    analisisDeLaLinea.add(analisisLexico(posibleConstante, 64, 1, numeroDeLinea));
                 } else {
-                    analisisDeLaIteracionActual = analisisLexicoDeIdentificadores(expresiones[i], numeroDeLinea);
-                    if (analisisDeLaIteracionActual == null) {
-                        analisisDeLaLinea.add(analisisLexico(expresiones[i], 100, 1, numeroDeLinea));
+                    analisisDeLaIteracionActual = analisisLexicoDeElementosDelLenguaje(expresiones[i], tokens, numeroDeLinea);
+                    if (analisisDeLaIteracionActual != null) {
+                        analisisDeLaLinea.add(analisisDeLaIteracionActual);
+                    } else {
+                        analisisDeLaIteracionActual = analisisLexicoDeIdentificadores(expresiones[i], numeroDeLinea);
+                        if (analisisDeLaIteracionActual == null) {
+                            analisisDeLaLinea.add(analisisLexico(expresiones[i], 100, 1, numeroDeLinea));
+                        }
+                        analisisDeLaLinea.add(analisisDeLaIteracionActual);
                     }
-                    analisisDeLaLinea.add(analisisDeLaIteracionActual);
                 }
             }
+            //Agrega una línea vacía al final del análisis
+            analisisDeLaLinea.add("\r\n");
         }
-        //Agrega una línea vacía al final del análisis
-        analisisDeLaLinea.add("");
         return analisisDeLaLinea;
     }
 
@@ -224,6 +227,7 @@ public class Automata {
     private static int obtenerToken(String[] tokens, String loQueDeberiaContener) {
         loQueDeberiaContener = loQueDeberiaContener.replaceAll("\n", "");
         loQueDeberiaContener = loQueDeberiaContener.replaceAll(" ", "");
+        loQueDeberiaContener = loQueDeberiaContener.replaceAll("\t", "");
         for (int i = 0; i < 100; i++) {
             if (tokens[i] != null) {
                 if (tokens[i].equals(loQueDeberiaContener)) {
