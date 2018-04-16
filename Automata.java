@@ -126,7 +126,7 @@ public class Automata {
         tokens[84] = "]";
         tokens[88] = ",";
         tokens[86] = ":";
-        tokens[82] = "(";
+        tokens[81] = "(";
         tokens[82] = ")";
         tokens[87] = ":=";
 
