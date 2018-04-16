@@ -150,7 +150,7 @@ public class Automata {
     private static ArrayList identificarLexicoEnUnaLinea(String lineaAIdentificar, String[] tokens, int numeroDeLinea) {
         ArrayList<String> analisisDeLaLinea = new ArrayList<>();
         //La primer línea siempre debe venir vacía, cuando sea detectada, se ignorará.
-        if (lineaAIdentificar.length() != 1) {
+        if (!lineaAIdentificar.contains("\uFEFF")) {
             //Estableciendo las expresiones
             String analisisDeLaIteracionActual;
             String expresiones[] = lineaAIdentificar.split(Pattern.quote(" "));
