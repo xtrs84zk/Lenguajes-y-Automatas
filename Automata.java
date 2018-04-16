@@ -154,6 +154,7 @@ public class Automata {
             //Estableciendo las expresiones
             String analisisDeLaIteracionActual;
             String expresiones[] = lineaAIdentificar.split(Pattern.quote(" "));
+            outer:
             for (int i = 0; i < expresiones.length; i++) {
                 //Si alguna de las expresiones comienza por comillas, se procede a concatenar expresiones
                 //mientras la expresión completa sea incorrecta, una vez que es correcta, se procede a analizar
@@ -164,9 +165,7 @@ public class Automata {
                         //si la línea termina, la expresión se considera incorrecta.
                         if (i == expresiones.length) {
                             analisisDeLaLinea.add(analisisLexico(posibleConstante, 100, 1, numeroDeLinea));
-                            //Agrega una línea vacía al final del análisis
-                            analisisDeLaLinea.add("\r\n");
-                            return analisisDeLaLinea;
+                            break outer;
                         }
                         posibleConstante += " " + expresiones[i];
                     } while (!constanteStringCorrectamenteFormulada(posibleConstante));
