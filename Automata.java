@@ -8,6 +8,7 @@ public class Automata {
         inicializarTokens(tokens);
         ArrayList<String> codigoPorLineas;
         ArrayList<String> analisisLexicoDeTodasLasLineas;
+        String rutaDondeSeGuardaElArchivo = "C:/users/xtrs84zk/desktop/analisis.txt";
         try {
             codigoPorLineas = cargarCodigoDesdeUnArchivoDeTexto();
         } catch (IOException e) {
@@ -26,12 +27,14 @@ public class Automata {
                 i++;
             } while (codigoPorLineas.get(i) != null);
         } catch (Exception e) {
-            System.err.print("Límite de la lista alcanzado, no debería ocurrir, pero después reviso \n");
+            //Se espera que esta excepción siempre ocurra.
+            System.err.print("");
         }
+        System.out.println("Se ha completado el análisis.");
         //concatenar el análisis a un archivo
         try {
-            escribirElResultadoAUnArchivo(analisisLexicoDeTodasLasLineas);
-            System.out.println("El archivo se guardó satisfactoriamente.");
+            escribirElResultadoAUnArchivo(analisisLexicoDeTodasLasLineas, rutaDondeSeGuardaElArchivo);
+            System.out.println("El archivo se guardó satisfactoriamente en la ruta \"" + rutaDondeSeGuardaElArchivo + "\"");
         } catch (Exception e) {
             System.err.print(e.toString());
             System.out.println("El archivo no se pudo guardar, imprimiendo el resultado en pantalla.");
@@ -225,9 +228,7 @@ public class Automata {
      * @return el número del token que corresponde al elemento
      */
     private static int obtenerToken(String[] tokens, String loQueDeberiaContener) {
-        loQueDeberiaContener = loQueDeberiaContener.replaceAll("\n", "");
-        loQueDeberiaContener = loQueDeberiaContener.replaceAll(" ", "");
-        loQueDeberiaContener = loQueDeberiaContener.replaceAll("\t", "");
+        loQueDeberiaContener = loQueDeberiaContener.replaceAll("\\s", "");
         for (int i = 0; i < 100; i++) {
             if (tokens[i] != null) {
                 if (tokens[i].equals(loQueDeberiaContener)) {
@@ -284,7 +285,6 @@ public class Automata {
                 i++;
                 //Si el caracter actual fue una comilla, no es el último caracter en la constante y antes de él
                 //no estaba un caracter de escape, la constante String está mal formada
-                System.out.println(i + " " + constante.length() + " " + constante + " " + constante.charAt(i));
                 if (constante.charAt(i) == '\"') {
                     if (constante.charAt(i - 1) == '\\') {
                         if (i < constante.length()) {
@@ -346,8 +346,8 @@ public class Automata {
      * @param analisisLexico que contiene la información a escribir.
      * @throws IOException en caso de no poder escribir al archivo.
      */
-    private static void escribirElResultadoAUnArchivo(ArrayList<String> analisisLexico) throws IOException {
-        FileWriter writer = new FileWriter("C:/users/xtrs84zk/desktop/analisis.txt");
+    private static void escribirElResultadoAUnArchivo(ArrayList<String> analisisLexico, String rutaDelArchivo) throws IOException {
+        FileWriter writer = new FileWriter(rutaDelArchivo);
         for (String anAnalisisLexico : analisisLexico) {
             if (anAnalisisLexico != null) {
                 writer.write(anAnalisisLexico);
