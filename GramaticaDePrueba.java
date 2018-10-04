@@ -1,17 +1,31 @@
+import javax.swing.*;
+
 public class GramaticaDePrueba {
     public static void main(String[] args) {
         String gramatica = "a+b+(cc)+ U cba+  U bb";
-        String expresion1 = "abcccc"; //Sí
-
-        //Probando gramática 1
+        String expresion1 = "cbaaaaaaaaaaa"; //Sí
+        JOptionPane.showMessageDialog(null, "Este applet verifica que la expresión ingresada pertenezca a " +
+                "la gramática: a+b+(cc)+ U cba+  U bb.");
         try {
-            if (perteneceALaGramatica(expresion1)) {
-                System.out.println("La expresión 1 pertenece a la gramática.");
-            } else {
-                System.out.println("La expresión 1 no pertenece a la gramática.");
-            }
-        } catch (Exception e) {
-            System.out.println("La expresión 1 no pertenece a la gramática.");
+            do {
+                expresion1 = JOptionPane.showInputDialog(null, "Ingrese expresión a verificar. \n" +
+                        "Para salir, sólo presione cancelar.");
+                if (expresion1.equals("null")) {
+                    System.exit(0);
+                }
+                //Probando gramática
+                try {
+                    if (perteneceALaGramatica(expresion1)) {
+                        JOptionPane.showMessageDialog(null, "La expresión " + expresion1 + " pertenece a la gramática.");
+                    } else {
+                        JOptionPane.showMessageDialog(null, "La expresión " + expresion1 + " no pertenece a la gramática.");
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "La expresión " + expresion1 + " no pertenece a la gramática.");
+                }
+            } while (true);
+        } catch (Exception ex) {
+            System.err.println("quéstapasando");
         }
     }
 
@@ -22,20 +36,16 @@ public class GramaticaDePrueba {
         if (expresion.charAt(i) == 'a') {
             //Si es una a, se sigue recorriendo la cadena hasta encontrar algo diferente
             while (expresion.charAt(++i) == 'a') ;
-            System.out.println(expresion.charAt(i) + "wtf");
             //Si lo que sigue es diferente a una b, se rechaza
             if (expresion.charAt(i) == 'b') {
                 //Después de la a, pueden venir una o más b
                 while (expresion.charAt(++i) == 'b') ;
                 //Luego de esa serie de b's, deben venir letras c en pares
                 if (expresion.charAt(i) == 'c') {
-                    while (i < expresion.length() - 1) {
-                        if (expresion.charAt(++i) == 'c' && expresion.charAt(++i) == 'c') {
-                            if (i == expresion.length() - 1) {
-                                return true;
-                            }
+                    while (i < expresion.length()) {
+                        if (expresion.charAt(i) == 'c' && expresion.charAt(i + 1) == 'c') {
+                            i += 2;
                         } else {
-                            //Si lo que está en esta posición no son dos c, la cadena no pertenece a la gramática
                             return false;
                         }
                     }
@@ -61,23 +71,18 @@ public class GramaticaDePrueba {
         if (expresion.charAt(0) == 'c' && expresion.charAt(1) == 'b') {
             //La siguiente letra debe ser una o más a
             if (expresion.charAt(i = 2) == 'a') {
-                //Mientras siga encontrando a's
-                if (i < expresion.length() - 1) {
-                    while (expresion.charAt(i) == 'a') {
-                        if (i < expresion.length()) {
-                            i++;
-                        } else {
-                            break;
-                        }
-                    }
-                    if (i == expresion.length() - 1) {
+                //Mientras no haya terminado de responder la expresión
+                while (i < expresion.length()) {
+                    if (expresion.charAt(i) != 'a') {
                         return false;
                     }
+                    i++;
                 }
+                //Se ha llegado hasta aquí, la expresión es correcta.
                 return true;
             }
         }
-        //Si no respeta escenario A o C, se descarta inmediatamente
+        //Si no respeta escenario A, B o C; se descarta inmediatamente
         return false;
     }
 }
