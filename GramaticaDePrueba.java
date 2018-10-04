@@ -4,28 +4,34 @@ public class GramaticaDePrueba {
     public static void main(String[] args) {
         String gramatica = "a+b+(cc)+ U cba+  U bb";
         String expresion1 = "cbaaaaaaaaaaa"; //Sí
+        String mensaje;
         JOptionPane.showMessageDialog(null, "Este applet verifica que la expresión ingresada pertenezca a " +
                 "la gramática: a+b+(cc)+ U cba+  U bb.");
         try {
             do {
+                mensaje = "La expresion  \"";
                 expresion1 = JOptionPane.showInputDialog(null, "Ingrese expresión a verificar. \n" +
                         "Para salir, sólo presione cancelar.");
                 if (expresion1.equals("null")) {
-                    System.exit(0);
+                    return;
                 }
+                mensaje += expresion1 + "\" " +
+                        "" +
+                        "";
                 //Probando gramática
                 try {
                     if (perteneceALaGramatica(expresion1)) {
-                        JOptionPane.showMessageDialog(null, "La expresión " + expresion1 + " pertenece a la gramática.");
+                        mensaje += " pertenece a la gramática.";
                     } else {
-                        JOptionPane.showMessageDialog(null, "La expresión " + expresion1 + " no pertenece a la gramática.");
+                        mensaje += " no pertenece a la gramática.";
                     }
                 } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "La expresión " + expresion1 + " no pertenece a la gramática.");
+                    mensaje += " no pertenece a la gramática.";
                 }
+                JOptionPane.showMessageDialog(null, mensaje);
             } while (true);
         } catch (Exception ex) {
-            System.err.println("quéstapasando");
+            System.err.println("El usuario ha presionado cancelar.");
         }
     }
 
