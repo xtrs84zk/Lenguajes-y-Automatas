@@ -8,7 +8,7 @@ public class VCI {
 
     public static void main(String[] args) {
         String expresion;  //Variable donde se almacenará la expresión.
-        do {
+        while (true) {
             //Se le pedirá al usuario introducir la expresión cuantas veces quiera
             expresion = JOptionPane.showInputDialog(null, "Introduzca la expresión");
             if (expresion == null) {
@@ -18,7 +18,7 @@ public class VCI {
             vector = "| "; //Se inicializa el vector
             obtenerVector(expresion); //Se obtiene el vector
             JOptionPane.showMessageDialog(null, "El vector de código intermedio es: \n" + vector);
-        } while (true);
+        }
     }
 
     private static void obtenerVector(String expresion) {
@@ -46,9 +46,11 @@ public class VCI {
                     //Se ha encontrado un paréntesis que cierra, vaciar la pila hasta encontrar uno que abra
                     while (!operadores.isEmpty()) {
                         ArrayList temp = (ArrayList) operadores.peek();
-                        if (temp.get(1) != "(") {
-                            temp = (ArrayList) operadores.pop();
-                            vector = vector + temp.get(1) + " | ";
+                        String temporal = (String) temp.get(1);
+                        System.err.println(temp.get(1));
+                        if (!temporal.equals("(")) {
+                            operadores.pop();
+                            vector = vector + temporal + " | ";
                         } else {
                             operadores.pop();
                             break;
@@ -79,16 +81,12 @@ public class VCI {
                                 operadores.push(operador_prioridad);
                             } else {
                                 //La pila no está vacía y el objeto contenido posee mayor o igual prioridad
-                                while (prioridad < prioridadDelObjetoEnLaPila && !operadores.isEmpty()) {
+                                while (!operadores.isEmpty() && prioridad < prioridadDelObjetoEnLaPila) {
                                     prioridadDelObjetoEnLaPila = Integer.parseInt((String) objetoEnElTopeDeLaPila.get(0));
                                     objetoEnElTopeDeLaPila = (ArrayList) operadores.pop();
-                                    vector = vector + objetoEnElTopeDeLaPila.get(1) + " | ";
-                                    if (!operadores.isEmpty()) {
-                                        objetoEnElTopeDeLaPila = (ArrayList) operadores.pop();
-                                        if (objetoEnElTopeDeLaPila.size() == 0) {
-                                            //no hay más objetos en la pila sortOf
-                                            break;
-                                        }
+                                    String objetoStringEETDP = (String) objetoEnElTopeDeLaPila.get(1);
+                                    if (!objetoStringEETDP.equals("(")) {
+                                        vector = vector + objetoEnElTopeDeLaPila.get(1) + " | ";
                                     }
                                 }
                             }
