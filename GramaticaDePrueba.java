@@ -15,9 +15,7 @@ public class GramaticaDePrueba {
                 if (expresion1.equals("null")) {
                     return;
                 }
-                mensaje += expresion1 + "\" " +
-                        "" +
-                        "";
+                mensaje += expresion1 + "\" ";
                 //Probando gramática
                 try {
                     if (perteneceALaGramatica(expresion1)) {
@@ -31,7 +29,7 @@ public class GramaticaDePrueba {
                 JOptionPane.showMessageDialog(null, mensaje);
             } while (true);
         } catch (Exception ex) {
-            System.err.println("El usuario ha presionado cancelar.");
+            System.err.println("Finalizado.");
         }
     }
 
