@@ -1,26 +1,30 @@
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Stack;
 
 public class VCI {
     //variable global donde estará el vector.
-    private static String vector = "";
+    private static String vector;
 
     public static void main(String[] args) {
-        String expresion = " a = 6 + 29 + 6 * ( 4 / 3 ) ; "; //Pensaré la manera de introducir los valores después
-        obtenerVector(expresion);
-        System.out.println(vector);
+        String expresion;  //Variable donde se almacenará la expresión.
+        expresion = JOptionPane.showInputDialog(null, "Introduzca la expresión");
+        vector = "| "; //Se inicializa el vector
+        obtenerVector(expresion); //Se obtiene el vector
+        JOptionPane.showMessageDialog(null, "El vector de código intermedio es: \n" + vector);
     }
 
     private static void obtenerVector(String expresion) {
         Stack operadores = new Stack();
         ArrayList<String> operador_prioridad;
+        ArrayList objetoEnElTopeDeLaPila;
         String[] constantes = expresion.split(" ");
         for (int i = 0; i < constantes.length; i++) {
-            System.out.println(vector);
             int prioridad = obtenerPrioridad(constantes[i]);
             switch (prioridad) {
                 case -1:
                     System.err.println("Error.");
+                    break;
                 case -2:
                     //Se agrega directamente al vector
                     vector = vector + constantes[i] + " | ";
@@ -38,25 +42,29 @@ public class VCI {
                         }
                     }
                     break;
+                case -4:
+                    //Se ha encontrado un ';', la pila debe vaciarse aquí por completo
+                    while (!operadores.isEmpty()) {
+                        objetoEnElTopeDeLaPila = (ArrayList) operadores.pop();
+                        vector = vector + objetoEnElTopeDeLaPila.get(1) + " | ";
+                    }
+                    vector = vector + constantes[i] + " | ";
+                    break;
+
                 default:
                     int prioridadDelObjetoEnLaPila = 0;
                     operador_prioridad = new ArrayList<String>();
                     operador_prioridad.add(0, String.valueOf(prioridad));
                     operador_prioridad.add(1, constantes[i]);
-                    System.out.println(operador_prioridad);
                     //Si la pila de operadores no está vacía, se procede a comparar
                     if (!operadores.isEmpty()) {
-                        System.err.println("La pila no está vacía.");
-                        ArrayList objetoEnElTopeDeLaPila = (ArrayList) operadores.peek();
+                        objetoEnElTopeDeLaPila = (ArrayList) operadores.peek();
                         //Por alguna razón que ahora parece lógica, esto está mal /* Creo que ya no */
                         if (objetoEnElTopeDeLaPila.size() != 0) {
-                            System.err.println(objetoEnElTopeDeLaPila.get(0) + " | " + objetoEnElTopeDeLaPila.get(1));
                             prioridadDelObjetoEnLaPila = Integer.parseInt((String) objetoEnElTopeDeLaPila.get(0));
                             if (prioridadDelObjetoEnLaPila < prioridad) {
-                                System.err.println("Pila con menor prioridad");
                                 operadores.push(operador_prioridad);
                             } else {
-                                System.out.println("Pila con mayor prioridad");
                                 //La pila no está vacía y el objeto contenido posee mayor o igual prioridad
                                 while (prioridadDelObjetoEnLaPila >= prioridad && !operadores.isEmpty()) {
                                     prioridadDelObjetoEnLaPila = Integer.parseInt((String) objetoEnElTopeDeLaPila.get(0));
@@ -72,12 +80,10 @@ public class VCI {
                                 }
                             }
                         } else {
-                            System.err.println("Se inserta " + operador_prioridad + " a la pila.");
                             //Si la pila de operadores está vacía, se procede a insertar directamente
                             operadores.push(operador_prioridad);
                         }
                     } else {
-                        System.err.println("Se inserta " + operador_prioridad + " a la pila.");
                         //Si la pila de operadores está vacía, se procede a insertar directamente
                         operadores.push(operador_prioridad);
                     }
@@ -118,6 +124,9 @@ public class VCI {
             if (operador.equals(")")) {
                 //regresará -3 cuando se trate de un paréntesis que cierra
                 return -3;
+            }
+            if (operador.equals(";")) {
+                return -4;
             }
             //Regresa -2 si es una constante (no reconocido)
             return -2;
