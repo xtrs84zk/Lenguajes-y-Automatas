@@ -12,7 +12,6 @@ public class VCI {
     }
 
     private static void obtenerVector(String expresion) {
-        int errorCount = 0;
         Stack operadores = new Stack();
         ArrayList<String> operador_prioridad;
         String[] constantes = expresion.split(" ");
@@ -54,19 +53,21 @@ public class VCI {
                             System.err.println(objetoEnElTopeDeLaPila.get(0) + " | " + objetoEnElTopeDeLaPila.get(1));
                             prioridadDelObjetoEnLaPila = Integer.parseInt((String) objetoEnElTopeDeLaPila.get(0));
                             if (prioridadDelObjetoEnLaPila < prioridad) {
-                                System.out.println("Pila con menor prioridad");
+                                System.err.println("Pila con menor prioridad");
                                 operadores.push(operador_prioridad);
                             } else {
                                 System.out.println("Pila con mayor prioridad");
                                 //La pila no está vacía y el objeto contenido posee mayor o igual prioridad
-                                while (prioridadDelObjetoEnLaPila < prioridad) {
+                                while (prioridadDelObjetoEnLaPila >= prioridad && !operadores.isEmpty()) {
                                     prioridadDelObjetoEnLaPila = Integer.parseInt((String) objetoEnElTopeDeLaPila.get(0));
                                     objetoEnElTopeDeLaPila = (ArrayList) operadores.pop();
                                     vector = vector + objetoEnElTopeDeLaPila.get(1) + " | ";
-                                    objetoEnElTopeDeLaPila = (ArrayList) operadores.pop();
-                                    if (objetoEnElTopeDeLaPila.size() == 0) {
-                                        //no hay más objetos en la pila sortOf
-                                        break;
+                                    if (!operadores.isEmpty()) {
+                                        objetoEnElTopeDeLaPila = (ArrayList) operadores.pop();
+                                        if (objetoEnElTopeDeLaPila.size() == 0) {
+                                            //no hay más objetos en la pila sortOf
+                                            break;
+                                        }
                                     }
                                 }
                             }
