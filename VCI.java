@@ -9,6 +9,7 @@ public class VCI {
     public static void main(String[] args) {
         String expresion;  //Variable donde se almacenará la expresión.
         do {
+            //Se le pedirá al usuario introducir la expresión cuantas veces quiera
             expresion = JOptionPane.showInputDialog(null, "Introduzca la expresión");
             if (expresion == null) {
                 //El usuario puede detenerlo presionando cancelar.
@@ -58,7 +59,7 @@ public class VCI {
                     break;
 
                 default:
-                    int prioridadDelObjetoEnLaPila = 0;
+                    int prioridadDelObjetoEnLaPila;
                     operador_prioridad = new ArrayList<String>();
                     operador_prioridad.add(0, String.valueOf(prioridad));
                     operador_prioridad.add(1, constantes[i]);
