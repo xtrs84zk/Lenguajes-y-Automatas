@@ -39,13 +39,14 @@ public class VCI {
                     operador_prioridad.add(0, prioridad + "");
                     operador_prioridad.add(1, constantes[i]);
                 } else {
-                    errorCount++;
+                    System.err.println("Error " + ++errorCount);
                     continue;
                 }
 
                 //Si la pila de operadores no está vacía, se procede a comparar
                 if (!operadores.isEmpty()) {
                     ArrayList objetoEnElTopeDeLaPila = (ArrayList) operadores.peek();
+                    //Por alguna razón que ahora parece lógica, esto está mal
                     if (objetoEnElTopeDeLaPila.size() != 0) {
                         if ((int) objetoEnElTopeDeLaPila.get(0) < prioridad) {
                             operadores.push(operador_prioridad);
@@ -55,7 +56,7 @@ public class VCI {
                                 objetoEnElTopeDeLaPila = (ArrayList) operadores.pop();
                                 vector = vector + objetoEnElTopeDeLaPila.get(1) + " | ";
                                 objetoEnElTopeDeLaPila = (ArrayList) operadores.pop();
-                                if (objetoEnElTopeDeLaPila == null) {
+                                if (objetoEnElTopeDeLaPila.size() == 0) {
                                     //no hay más objetos en la pila sortOf
                                     break;
                                 }
