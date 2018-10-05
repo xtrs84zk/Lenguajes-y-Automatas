@@ -29,6 +29,12 @@ public class VCI {
         for (int i = 0; i < constantes.length; i++) {
             int prioridad = obtenerPrioridad(constantes[i]);
             switch (prioridad) {
+                case 0:
+                    operador_prioridad = new ArrayList<String>();
+                    operador_prioridad.add(0, String.valueOf(prioridad));
+                    operador_prioridad.add(1, constantes[i]);
+                    operadores.push(operador_prioridad);
+                    break;
                 case -1:
                     System.err.println("Error.");
                     break;
@@ -73,7 +79,7 @@ public class VCI {
                                 operadores.push(operador_prioridad);
                             } else {
                                 //La pila no está vacía y el objeto contenido posee mayor o igual prioridad
-                                while (prioridadDelObjetoEnLaPila >= prioridad && !operadores.isEmpty()) {
+                                while (prioridad < prioridadDelObjetoEnLaPila && !operadores.isEmpty()) {
                                     prioridadDelObjetoEnLaPila = Integer.parseInt((String) objetoEnElTopeDeLaPila.get(0));
                                     objetoEnElTopeDeLaPila = (ArrayList) operadores.pop();
                                     vector = vector + objetoEnElTopeDeLaPila.get(1) + " | ";
