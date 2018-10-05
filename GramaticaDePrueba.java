@@ -3,7 +3,7 @@ import javax.swing.*;
 public class GramaticaDePrueba {
     public static void main(String[] args) {
         String gramatica = "a+b+(cc)+ U cba+  U bb";
-        String expresion1 = "cbaaaaaaaaaaa"; //Sí
+        String expresion1 = "cba"; //Gramática de prueba | innecesaria
         String mensaje;
         JOptionPane.showMessageDialog(null, "Este applet verifica que la expresión ingresada pertenezca a " +
                 "la gramática: a+b+(cc)+ U cba+  U bb.");

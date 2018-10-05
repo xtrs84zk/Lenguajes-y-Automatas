@@ -46,17 +46,19 @@ public class VCI {
                 //Si la pila de operadores no está vacía, se procede a comparar
                 if (!operadores.isEmpty()) {
                     ArrayList objetoEnElTopeDeLaPila = (ArrayList) operadores.peek();
-                    if ((int) objetoEnElTopeDeLaPila.get(0) < prioridad) {
-                        operadores.push(operador_prioridad);
-                    } else {
-                        //La pila no está vacía y el objeto contenido posee mayor o igual prioridad
-                        while (!((int) objetoEnElTopeDeLaPila.get(0) < prioridad)) {
-                            objetoEnElTopeDeLaPila = (ArrayList) operadores.pop();
-                            vector = vector + objetoEnElTopeDeLaPila.get(1) + " | ";
-                            objetoEnElTopeDeLaPila = (ArrayList) operadores.pop();
-                            if (objetoEnElTopeDeLaPila == null) {
-                                //no hay más objetos en la pila sortOf
-                                break;
+                    if (objetoEnElTopeDeLaPila.size() != 0) {
+                        if ((int) objetoEnElTopeDeLaPila.get(0) < prioridad) {
+                            operadores.push(operador_prioridad);
+                        } else {
+                            //La pila no está vacía y el objeto contenido posee mayor o igual prioridad
+                            while (!((int) objetoEnElTopeDeLaPila.get(0) < prioridad)) {
+                                objetoEnElTopeDeLaPila = (ArrayList) operadores.pop();
+                                vector = vector + objetoEnElTopeDeLaPila.get(1) + " | ";
+                                objetoEnElTopeDeLaPila = (ArrayList) operadores.pop();
+                                if (objetoEnElTopeDeLaPila == null) {
+                                    //no hay más objetos en la pila sortOf
+                                    break;
+                                }
                             }
                         }
                     }
