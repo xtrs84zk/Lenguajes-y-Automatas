@@ -8,10 +8,16 @@ public class VCI {
 
     public static void main(String[] args) {
         String expresion;  //Variable donde se almacenará la expresión.
-        expresion = JOptionPane.showInputDialog(null, "Introduzca la expresión");
-        vector = "| "; //Se inicializa el vector
-        obtenerVector(expresion); //Se obtiene el vector
-        JOptionPane.showMessageDialog(null, "El vector de código intermedio es: \n" + vector);
+        do {
+            expresion = JOptionPane.showInputDialog(null, "Introduzca la expresión");
+            if (expresion == null) {
+                //El usuario puede detenerlo presionando cancelar.
+                return;
+            }
+            vector = "| "; //Se inicializa el vector
+            obtenerVector(expresion); //Se obtiene el vector
+            JOptionPane.showMessageDialog(null, "El vector de código intermedio es: \n" + vector);
+        } while (true);
     }
 
     private static void obtenerVector(String expresion) {
@@ -126,6 +132,7 @@ public class VCI {
                 return -3;
             }
             if (operador.equals(";")) {
+                //Regresará -4 en caso de un punto y coma
                 return -4;
             }
             //Regresa -2 si es una constante (no reconocido)
