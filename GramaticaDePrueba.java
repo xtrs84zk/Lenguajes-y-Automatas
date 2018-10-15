@@ -63,14 +63,14 @@ public class GramaticaDePrueba {
             }
         }
         //Si la expresión comienza por una 'b', se considera el escenario B
-        //Scenario B
+        //Scenario B bb
         if (expresion.charAt(i) == 'b' && expresion.charAt(++i) == 'b') {
             if (i == expresion.length() - 1) {
                 return true;
             }
         }
         //Si comienza por algo distinto de a, se considera el escenario C
-        //Scenario C
+        //Scenario C cba+
         //La siguiente letra debe ser una b
         if (expresion.charAt(0) == 'c' && expresion.charAt(1) == 'b') {
             //La siguiente letra debe ser una o más a
