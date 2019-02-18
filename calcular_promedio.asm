@@ -1,6 +1,6 @@
 	ld	cero
-	st sum
-	st cant
+	st	sum
+	st	cant
 loop	get
 jz	done
 add	sum
@@ -8,8 +8,8 @@ st	sum
 ld	one
 add	cant
 j	loop
-done ld	sum
-div cant	prom
+done	ld	sum
+div	cant	prom
 ld	prom
 out
 halt
