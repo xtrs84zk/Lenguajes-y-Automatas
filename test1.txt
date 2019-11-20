@@ -1,0 +1,9 @@
+begin
+program @analizadorSintactico;
+var @num1 : integer = 50;
+var @num2 : integer = 50;
+start @suma {
+@resultado : integer = @num1 + @num2 = 100;
+}
+break;
+end;
